@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 #region DbContext - Acessando o banco de dados
 
-var connString = builder.Configuration.GetConnectionString("UserConnection");
+var connString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 //DbContext - Acessando o banco de dados MySql
 //builder.Services.AddDbContext<UserDbContext> (dbContextOptions => 
@@ -31,6 +31,8 @@ builder.Services
     .AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<UserDbContext>()
     .AddDefaultTokenProviders();//Usado para Autenticação
+
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 #endregion
 
 builder.Services.AddControllers();
