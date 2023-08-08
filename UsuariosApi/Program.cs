@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using UsuariosApi.Data;
 using UsuariosApi.Models;
+using UsuariosApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,14 @@ builder.Services.Configure<IdentityOptions>(options =>
     options.Password.RequiredLength = 10;
     options.Password.RequiredUniqueChars = 1;
 });
+
+/*  Obs.:
+    AddScoped: Cria uma instância única para cada escopo de requisição dentro da mesma requisição HTTP, sendo reutilizada ao longo do processamento.
+    AddTransient: Gera uma nova instância a cada solicitação, ideal para serviços leves e efêmeros, sem necessidade de compartilhamento.
+    AddSingleton: Cria uma única instância durante todo o ciclo de vida da aplicação, compartilhada entre todas as requisições, adequada para serviços globais e constantes.
+ */
+
+builder.Services.AddScoped<RegisterServices>();
 #endregion
 
 builder.Services.AddControllers();
