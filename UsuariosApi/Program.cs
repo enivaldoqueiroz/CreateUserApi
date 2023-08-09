@@ -53,7 +53,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     AddSingleton: Cria uma única instância durante todo o ciclo de vida da aplicação, compartilhada entre todas as requisições, adequada para serviços globais e constantes.
  */
 
-builder.Services.AddScoped<RegisterServices>();
+builder.Services.AddScoped<UserServices>();
 #endregion
 
 builder.Services.AddControllers();
