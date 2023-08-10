@@ -9,7 +9,7 @@ namespace UsuariosApi.Services
     {
         private IMapper _mapper;
         private UserManager<User> _userManager;
-        private SignInManager<User> _signInManager;
+        private SignInManager<User> _signInManager;//O SignInManager é uma classe oferecida pelo ASP.NET Identity, que é uma estrutura de autenticação e gerenciamento de identidade para aplicativos web. Ele gerencia o processo de autenticação do usuário, como login e logout, e fornece métodos para lidar com a identidade do usuário, como redefinição de senha e confirmação de email. O SignInManager é usado para facilitar a autenticação do usuário e a criação de cookies de autenticação para permitir que os usuários acessem partes protegidas do aplicativo.
         private TokenServices _tokenService;
 
         public UserServices(IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, TokenServices tokenService)
@@ -20,16 +20,18 @@ namespace UsuariosApi.Services
             _tokenService = tokenService;
         }
 
-        public async Task Login(LoginUserDTO loginUserDTO)
+        public async Task<string> Login(LoginUserDTO loginUserDTO)
         {
             var result = await _signInManager.PasswordSignInAsync(loginUserDTO.Username, loginUserDTO.Password, isPersistent: false, lockoutOnFailure: false);
             
             if (!result.Succeeded) 
                 throw new ApplicationException("Usuário não autenticado!");
 
-            User user = new User();
+            var user = _signInManager.UserManager.Users.FirstOrDefault(user => user.NormalizedUserName == loginUserDTO.Username.ToUpper());
 
-            _tokenService.GenerateToken(user);
+            var token = _tokenService.GenerateToken(user);
+
+            return token;
         }
 
         public async Task RegisterAsync(CreateUserDTO createUserDTO)

@@ -54,6 +54,7 @@ builder.Services.Configure<IdentityOptions>(options =>
  */
 
 builder.Services.AddScoped<UserServices>();
+builder.Services.AddScoped<TokenServices>();
 #endregion
 
 builder.Services.AddControllers();
