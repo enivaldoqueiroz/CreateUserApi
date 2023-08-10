@@ -20,7 +20,8 @@ namespace UsuariosApi.Services
             {
                 new Claim("username", user.UserName),
                 new Claim("id", user.Id),
-                new Claim(ClaimTypes.DateOfBirth, user.BirthDate.ToString())
+                new Claim(ClaimTypes.DateOfBirth, user.BirthDate.ToString()),
+                new Claim("loginTimeStamp", DateTime.UtcNow.ToString())
             };
 
             /*
