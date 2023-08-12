@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -56,6 +57,7 @@ builder.Services.Configure<IdentityOptions>(options =>
 
 builder.Services.AddScoped<UserServices>();
 builder.Services.AddScoped<TokenServices>();
+builder.Services.AddSingleton<IAuthorizationHandler,IdadeAuthorization>();
 
 /*
  O trecho de código que você forneceu está configurando políticas de autorização para sua aplicação usando o serviço de autorização no ASP.NET Core. Essas políticas controlam o acesso a determinados recursos com base em requisitos específicos. Vou explicar em detalhes o que cada linha faz:
