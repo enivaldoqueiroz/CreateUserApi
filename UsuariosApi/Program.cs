@@ -84,13 +84,9 @@ builder.Services.AddAuthorization(options =>
 Aqui está o que cada parte do código faz:
 
 1. `builder.Services.AddAuthentication(options => ...`: Isso adiciona a configuração para o serviço de autenticação à coleção de serviços. O método de callback dentro deste bloco permite que você configure opções de autenticação.
-
 2. `options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;`: Aqui você está definindo o esquema de autenticação padrão como `JwtBearerDefaults.AuthenticationScheme`, o que significa que a autenticação será feita usando o esquema de token JWT (Bearer).
-
 3. `.AddJwtBearer(options => ...`: Isso configura o esquema de autenticação `JwtBearer`. Ele define as opções de validação do token JWT.
-
 4. `options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters`: Aqui você está configurando os parâmetros de validação para o token JWT.
-
 - `ValidateIssuerSigningKey = true`: Define se a chave de assinatura do emissor será validada. No caso, está definida como verdadeira, o que significa que a chave de assinatura será validada.
 
 - `IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1qaz@WSX3edc$RFV5tgb"))`: Aqui você está especificando a chave de assinatura usada para validar os tokens. A chave simétrica é usada para verificar a autenticidade do token.
