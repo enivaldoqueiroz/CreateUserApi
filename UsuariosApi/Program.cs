@@ -16,7 +16,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 #region DbContext - Acessando o banco de dados
 
-var connString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connString = builder.Configuration["ConnectionStrings:DefaultConnection"];
 
 //DbContext - Acessando o banco de dados MySql
 //builder.Services.AddDbContext<UserDbContext> (dbContextOptions => 
@@ -107,7 +107,7 @@ builder.Services.AddAuthentication(options =>
     options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
     {
         ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1qaz@WSX3edc$RFV5tgb")),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["SymmetricSecurityKey"])),
         ValidateAudience = false,
         ValidateIssuer = false,
         ClockSkew = TimeSpan.Zero,

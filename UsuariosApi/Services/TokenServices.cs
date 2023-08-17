@@ -8,6 +8,13 @@ namespace UsuariosApi.Services
 {
     public class TokenServices
     {
+        private IConfiguration _configuration;
+
+        public TokenServices(IConfiguration configuration)
+        {
+            _configuration = configuration;
+        }
+
         public string GenerateToken(User user)
         {
             /*
@@ -28,7 +35,7 @@ namespace UsuariosApi.Services
              * Aqui, uma chave de segurança simétrica está sendo criada a partir de uma sequência de bytes obtida a partir da string fornecida. 
              * Essa chave será usada para assinar o token JWT, garantindo sua integridade e autenticidade.
              ***/
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1qaz@WSX3edc$RFV5tgb"));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["SymmetricSecurityKey"]));
 
             /*
              * Uma instância de SigningCredentials está sendo criada, combinando a chave de segurança criada anteriormente com o algoritmo de 
