@@ -1,7 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 using UsuariosApi.Authorization;
 using UsuariosApi.Data;
 using UsuariosApi.Models;
@@ -75,6 +78,45 @@ builder.Services.AddAuthorization(options =>
     );
 });
 
+/*
+ O código que você forneceu está configurando a autenticação por meio de tokens JWT (JSON Web Token) em uma aplicação ASP.NET Core. Isso permite que os usuários se autentiquem usando tokens JWT para acessar recursos protegidos. Vou descrever cada parte do código:
+
+Aqui está o que cada parte do código faz:
+
+1. `builder.Services.AddAuthentication(options => ...`: Isso adiciona a configuração para o serviço de autenticação à coleção de serviços. O método de callback dentro deste bloco permite que você configure opções de autenticação.
+
+2. `options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;`: Aqui você está definindo o esquema de autenticação padrão como `JwtBearerDefaults.AuthenticationScheme`, o que significa que a autenticação será feita usando o esquema de token JWT (Bearer).
+
+3. `.AddJwtBearer(options => ...`: Isso configura o esquema de autenticação `JwtBearer`. Ele define as opções de validação do token JWT.
+
+4. `options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters`: Aqui você está configurando os parâmetros de validação para o token JWT.
+
+- `ValidateIssuerSigningKey = true`: Define se a chave de assinatura do emissor será validada. No caso, está definida como verdadeira, o que significa que a chave de assinatura será validada.
+
+- `IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1qaz@WSX3edc$RFV5tgb"))`: Aqui você está especificando a chave de assinatura usada para validar os tokens. A chave simétrica é usada para verificar a autenticidade do token.
+
+- `ValidateAudience = false`: Define se o público-alvo (audiência) será validado. Está definido como falso, o que significa que a validação da audiência será desativada.
+
+- `ValidateIssuer = false`: Define se o emissor do token será validado. Está definido como falso, o que significa que a validação do emissor será desativada.
+
+- `ClockSkew = TimeSpan.Zero`: Define o valor de "ClockSkew" como zero, o que significa que a tolerância para a validade do tempo do token é zero, ou seja, o token deve estar exatamente dentro do prazo especificado.
+
+No geral, esse código configura o sistema de autenticação para usar tokens JWT, definindo opções de validação para verificar a autenticidade e validade dos tokens durante o processo de autenticação. Isso permite que os usuários se autentiquem usando tokens JWT para acessar recursos protegidos na aplicação. 
+ */
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("1qaz@WSX3edc$RFV5tgb")),
+        ValidateAudience = false,
+        ValidateIssuer = false,
+        ClockSkew = TimeSpan.Zero,
+    };
+});
 #endregion
 
 builder.Services.AddControllers();
@@ -93,8 +135,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();
